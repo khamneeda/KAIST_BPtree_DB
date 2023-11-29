@@ -456,11 +456,20 @@ class BPTree(object):
       def get_parent(self):
          return self.parent
 
-   def stringmake(self, bnode,max_depth,last, result):
+   def stringmake(self, bnode, root, last_list,last result, first):
       # 위치 프린트
       result = result + "\n"
-      for i in range(max_depth - bnode.depth):
+      if not root:
          result = result + "   "
+         if len(last_list) == 1:
+            pass
+         else:
+            for l in last_list.pop(0):
+               if l:
+                  result = result + "   "
+               else:
+                  result = result + "|  "
+         
       if last:
          result = result + "`- ["
       else:
@@ -473,28 +482,60 @@ class BPTree(object):
             result = result + ", "
       result = result + "]"
 
-      # 모든 leaf에 대해 호출
+      # 모든 child에 대해 호출
       if not bnode.isleaf:
-         for node in bnode.nodes:
-            result = self.stringmake(node.child1, max_depth, False, result)
-         result = self.stringmake(node.child2, max_depth, True, result)
+         for n in range(len(bnode.nodes)):
+            if n==0:
+               result = self.stringmake(bnode.nodes[n].child1, False, last_list.append(False), False, result, True)
+            else:
+               result = self.stringmake(bnode.nodes[n].child1, False, last_list.append(False), False, result, False)
+         result = self.stringmake(bnode.nodes[n].child2, False, last_list.append(True), True, result, False)
 
       return result
-      # 현재 프린트
-      # 만약 leaf 있으면
-      # 자신의 모든 leaf에 대해 호출
-      # 매번 result 업데이트 해서 넣어줘야
-      # leaf에 호출할때 횟수별로 시작 조건 다르게 해줘서
 
-   def check(self, b):
-      print("######")
-      print(b.get_values())
-      if b.parent != None:
-         print("Parent:",b.parent.values)
-      else:
-         print("No parent")
-      print("\n")
+   # def stringmake(self, bnode,max_depth,last, result):
+   #    # 위치 프린트
+   #    result = result + "\n"
+   #    for i in range(max_depth - bnode.depth):
+   #       result = result + "   "
+   #    if last:
+   #       result = result + "`- ["
+   #    else:
+   #       result = result + "|- ["
       
+   #    # value 프린트
+   #    for b in range(len(bnode.nodes)):
+   #       result = result + str(bnode.nodes[b].value)
+   #       if b != len(bnode.nodes) -1:
+   #          result = result + ", "
+   #    result = result + "]"
+
+   #    # 모든 child에 대해 호출
+   #    if not bnode.isleaf:
+   #       for node in bnode.nodes:
+   #          result = self.stringmake(node.child1, max_depth, False, result)
+   #       result = self.stringmake(node.child2, max_depth, True, result)
+
+   #    return result
+   #    # 현재 프린트
+   #    # 만약 leaf 있으면
+   #    # 자신의 모든 leaf에 대해 호출
+   #    # 매번 result 업데이트 해서 넣어줘야
+   #    # leaf에 호출할때 횟수별로 시작 조건 다르게 해줘서
+
+   def check(self, b,val, key, sig="#"):
+      # if val == key:
+      #    for i in range(10):
+      #       print(sig, end= "")
+      #    print("\nKey:",key)
+      #    print(b.get_values())
+      #    if b.parent != None:
+      #       print("Parent:",b.parent.get_values())
+      #    else:
+      #       print("No parent")
+      #    print("\n")
+      pass
+         
    def insert(self,key_list):
       bnode_list = []
       node_list = []
@@ -516,19 +557,25 @@ class BPTree(object):
          
          # 리프로 가서 그냥 빈자리 앞쪽 b노드에 붙여서 넣기
          bpos = root
+         self.check(bpos,11,key)
          while not bpos.isleaf:
             bpos = bpos.nodes[0].child1
-            self.check(bpos)
+            self.check(bpos,11,key)
          
-         self.check(bpos)
 
          # 해당 B리프 찾기
          while bpos.next != None:
             if bpos.next.get_values()[0] > key:
+               # if key == 11: print("@@@@@@here:", bpos.next.get_values()[0])
                break
             else:
                bpos = bpos.next
-         
+            self.check(bpos,9,key,"$")
+      
+         # print("     Prev: ",bpos.prev)
+         # print("     Next: ",bpos.next)
+         self.check(bpos, 9,key,"!")
+
          # 해당 B리프 내에서 위치에 삽입
          values = bpos.get_values()
          for i in range(len(values)):
@@ -548,10 +595,10 @@ class BPTree(object):
             # 해당 층 분할
             bnode_list.append(self.BNode())
             rightbnode = bnode_list[len(bnode_list) - 1]
-            rightbnode.set_parent = bpos.parent
-            rightbnode.set_leaf = bpos.isleaf
+            rightbnode.parent = bpos.parent
+            rightbnode.isleaf = bpos.isleaf
             rightbnode.prev = bpos
-            rightbnode.set_next = bpos.next
+            rightbnode.next = bpos.next
             bpos.next = rightbnode
             rightbnode.depth = bpos.depth
 
@@ -559,11 +606,16 @@ class BPTree(object):
                rightbnode.add_node(bpos.nodes[n],n-2)
             for j in range(3):
                bpos.pop_node(4-j)
+            if not rightbnode.isleaf:
+               rightbnode.pop_node(0)
 
             # 중간친구 올리기
             # 얘가 child update 해줘야
             # greater than equal to가 오른쪽 child2
 
+   # leaf가 아닐 때는 추가하지 않고, 자식도 없애줌
+   # 하나 더 빼줘야한다 라는게 11을 빼줘야
+   
             parent = bpos.parent
             if parent == None:
                bnode_list.append(self.BNode())
@@ -596,7 +648,8 @@ class BPTree(object):
          # string 만들기
          bnode = root
          maxdepth = root.depth
-         result = self.stringmake(bnode, maxdepth, True, result)
+         result = self.stringmake(bnode, True, [],True result, True)
+
 
          # print("@@@")
          # print(root.get_values())
@@ -696,11 +749,11 @@ if __name__ == '__main__':
    # print(bpt.show([28, 50, 9, 44, 15, 68, 12, 73, 49, 62], []))
    # print(bpt.show([3, 97, 18, 96, 82, 84, 41, 67, 56, 11], []))
 
-   # bpt.show([72, 99, 67, 70, 52, 28, 27, 89, 94, 10], [])
-   # bpt.show([35, 71, 44, 60, 81, 61, 29, 95, 63, 23], [])
-   # bpt.show([29, 26, 40, 34, 65, 73, 15, 12, 82, 44], [])
-   # bpt.show([28, 50, 9, 44, 15, 68, 12, 73, 49, 62], [])
-   # bpt.show([3, 97, 18, 96, 82, 84, 41, 67, 56, 11], [])
+   bpt.show([72, 99, 67, 70, 52, 28, 27, 89, 94, 10], [])
+   bpt.show([35, 71, 44, 60, 81, 61, 29, 95, 63, 23], [])
+   bpt.show([29, 26, 40, 34, 65, 73, 15, 12, 82, 44], [])
+   bpt.show([28, 50, 9, 44, 15, 68, 12, 73, 49, 62], [])
+   bpt.show([3, 97, 18, 96, 82, 84, 41, 67, 56, 11], [])
    print(bpt.show([0,17,6,18,11,1,3,16,9,5,2,13,19,8,15,10,14,12,7,4], []))
 
    # For Programming Assignment 2/2

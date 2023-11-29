@@ -456,11 +456,23 @@ class BPTree(object):
       def get_parent(self):
          return self.parent
 
-   def stringmake(self, bnode,max_depth,last, result):
+   def stringmake(self, bnode, root, last_list, last, result, first):
       # 위치 프린트
       result = result + "\n"
-      for i in range(max_depth - bnode.depth):
+      if not root:
          result = result + "   "
+         if len(last_list) == 1:
+            pass
+         else:
+            for l in range(len(last_list)):
+               if l ==0:
+                  continue
+               else:
+                  if last_list[l]:
+                     result = result + "   "
+                  else:
+                     result = result + "|  "
+         
       if last:
          result = result + "`- ["
       else:
@@ -473,18 +485,46 @@ class BPTree(object):
             result = result + ", "
       result = result + "]"
 
-      # 모든 leaf에 대해 호출
+      # 모든 child에 대해 호출
       if not bnode.isleaf:
-         for node in bnode.nodes:
-            result = self.stringmake(node.child1, max_depth, False, result)
-         result = self.stringmake(node.child2, max_depth, True, result)
+         for n in range(len(bnode.nodes)):
+            if n==0:
+               result = self.stringmake(bnode.nodes[n].child1, False, last_list.append(False), False, result, True)
+            else:
+               result = self.stringmake(bnode.nodes[n].child1, False, last_list.append(False), False, result, False)
+         result = self.stringmake(bnode.nodes[n].child2, False, last_list.append(True), True, result, False)
 
       return result
-      # 현재 프린트
-      # 만약 leaf 있으면
-      # 자신의 모든 leaf에 대해 호출
-      # 매번 result 업데이트 해서 넣어줘야
-      # leaf에 호출할때 횟수별로 시작 조건 다르게 해줘서
+
+   # def stringmake(self, bnode,max_depth,last, result):
+   #    # 위치 프린트
+   #    result = result + "\n"
+   #    for i in range(max_depth - bnode.depth):
+   #       result = result + "   "
+   #    if last:
+   #       result = result + "`- ["
+   #    else:
+   #       result = result + "|- ["
+      
+   #    # value 프린트
+   #    for b in range(len(bnode.nodes)):
+   #       result = result + str(bnode.nodes[b].value)
+   #       if b != len(bnode.nodes) -1:
+   #          result = result + ", "
+   #    result = result + "]"
+
+   #    # 모든 child에 대해 호출
+   #    if not bnode.isleaf:
+   #       for node in bnode.nodes:
+   #          result = self.stringmake(node.child1, max_depth, False, result)
+   #       result = self.stringmake(node.child2, max_depth, True, result)
+
+   #    return result
+   #    # 현재 프린트
+   #    # 만약 leaf 있으면
+   #    # 자신의 모든 leaf에 대해 호출
+   #    # 매번 result 업데이트 해서 넣어줘야
+   #    # leaf에 호출할때 횟수별로 시작 조건 다르게 해줘서
 
    def check(self, b,val, key, sig="#"):
       # if val == key:
@@ -611,7 +651,8 @@ class BPTree(object):
          # string 만들기
          bnode = root
          maxdepth = root.depth
-         result = self.stringmake(bnode, maxdepth, True, result)
+         result = self.stringmake(bnode, True, [],True, result, True)
+
 
          # print("@@@")
          # print(root.get_values())
