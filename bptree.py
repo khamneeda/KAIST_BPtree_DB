@@ -461,20 +461,19 @@ class BPTree(object):
       result = result + "\n"
       if not root:
          result = result + "   "
-         if len(last_list) == 1:
+         if len(last_list) <= 1:
             pass
          else:
-            for l in range(len(last_list)):
-               if l ==0:
-                  continue
+            for l in range(1, len(last_list)):
+               if last_list[l]:
+                  result = result + "   "
                else:
-                  if last_list[l]:
-                     result = result + "   "
-                  else:
-                     result = result + "|  "
-         
+                  result = result + "|  "
+      
+      next = False
       if last:
          result = result + "`- ["
+         next = True
       else:
          result = result + "|- ["
       
@@ -489,55 +488,12 @@ class BPTree(object):
       if not bnode.isleaf:
          for n in range(len(bnode.nodes)):
             if n==0:
-               result = self.stringmake(bnode.nodes[n].child1, False, last_list.append(False), False, result, True)
+               result = self.stringmake(bnode.nodes[n].child1, False, last_list + [next], False, result, True)
             else:
-               result = self.stringmake(bnode.nodes[n].child1, False, last_list.append(False), False, result, False)
-         result = self.stringmake(bnode.nodes[n].child2, False, last_list.append(True), True, result, False)
+               result = self.stringmake(bnode.nodes[n].child1, False, last_list + [next], False, result, False)
+         result = self.stringmake(bnode.nodes[n].child2, False, last_list + [next], True, result, False)
 
       return result
-
-   # def stringmake(self, bnode,max_depth,last, result):
-   #    # 위치 프린트
-   #    result = result + "\n"
-   #    for i in range(max_depth - bnode.depth):
-   #       result = result + "   "
-   #    if last:
-   #       result = result + "`- ["
-   #    else:
-   #       result = result + "|- ["
-      
-   #    # value 프린트
-   #    for b in range(len(bnode.nodes)):
-   #       result = result + str(bnode.nodes[b].value)
-   #       if b != len(bnode.nodes) -1:
-   #          result = result + ", "
-   #    result = result + "]"
-
-   #    # 모든 child에 대해 호출
-   #    if not bnode.isleaf:
-   #       for node in bnode.nodes:
-   #          result = self.stringmake(node.child1, max_depth, False, result)
-   #       result = self.stringmake(node.child2, max_depth, True, result)
-
-   #    return result
-   #    # 현재 프린트
-   #    # 만약 leaf 있으면
-   #    # 자신의 모든 leaf에 대해 호출
-   #    # 매번 result 업데이트 해서 넣어줘야
-   #    # leaf에 호출할때 횟수별로 시작 조건 다르게 해줘서
-
-   def check(self, b,val, key, sig="#"):
-      # if val == key:
-      #    for i in range(10):
-      #       print(sig, end= "")
-      #    print("\nKey:",key)
-      #    print(b.get_values())
-      #    if b.parent != None:
-      #       print("Parent:",b.parent.get_values())
-      #    else:
-      #       print("No parent")
-      #    print("\n")
-      pass
          
    def insert(self,key_list):
       bnode_list = []
@@ -560,24 +516,16 @@ class BPTree(object):
          
          # 리프로 가서 그냥 빈자리 앞쪽 b노드에 붙여서 넣기
          bpos = root
-         self.check(bpos,11,key)
          while not bpos.isleaf:
             bpos = bpos.nodes[0].child1
-            self.check(bpos,11,key)
          
 
          # 해당 B리프 찾기
          while bpos.next != None:
             if bpos.next.get_values()[0] > key:
-               # if key == 11: print("@@@@@@here:", bpos.next.get_values()[0])
                break
             else:
                bpos = bpos.next
-            self.check(bpos,9,key,"$")
-      
-         # print("     Prev: ",bpos.prev)
-         # print("     Next: ",bpos.next)
-         self.check(bpos, 9,key,"!")
 
          # 해당 B리프 내에서 위치에 삽입
          values = bpos.get_values()
@@ -636,7 +584,7 @@ class BPTree(object):
                if upnode.value > parent_values[i]:
                   i += 1
                else:
-                  parent.nodes[i].child1 = rightbnode
+                  parent.nodes[i].child1 = rightbnode ## 여기 뭔가 있는듯
                parent.add_node(upnode, i)
 
 
@@ -651,26 +599,7 @@ class BPTree(object):
          # string 만들기
          bnode = root
          maxdepth = root.depth
-         result = self.stringmake(bnode, True, [],True, result, True)
-
-
-         # print("@@@")
-         # print(root.get_values())
-         # if (len(root.get_values())>0):
-         #    if(root.nodes[0].child1 != None):         
-         #       print("child1:", root.nodes[0].child1.get_values())
-         #       print("child2:", root.nodes[0].child2.get_values())
-         #    else:
-         #       print("No child1")
-         #    if (len(root.get_values())>1):
-         #       if(root.nodes[0].child2 != None):         
-         #          print("child3:", root.nodes[1].child1.get_values())
-         #       else:
-         #          print("No child3")
-         #    else:
-         #       print("not enough")
-         # else:
-         #    print("No values")
+         result = self.stringmake(bnode, True, [], True, result, True)
 
       return result
 
@@ -686,26 +615,7 @@ class BPTree(object):
    # return: result string (sequence of tree representations)
    def show(self, insert_keys, delete_keys):
       # Fill in here
-      if insert_keys == [72, 99, 67, 70, 52, 28, 27, 89, 94, 10] and len(delete_keys) == 0:
-         result = self.insert(insert_keys)
-         print(result == answer1_1)
-      elif insert_keys == [35, 71, 44, 60, 81, 61, 29, 95, 63, 23] and len(delete_keys) == 0:
-         result = self.insert(insert_keys)
-         print(result == answer1_2)
-      elif insert_keys == [29, 26, 40, 34, 65, 73, 15, 12, 82, 44] and len(delete_keys) == 0:
-         result = self.insert(insert_keys)
-         print(result == answer1_3)
-      elif insert_keys == [28, 50, 9, 44, 15, 68, 12, 73, 49, 62] and len(delete_keys) == 0:
-         result = self.insert(insert_keys)
-         print(result == answer1_4)
-      elif insert_keys == [3, 97, 18, 96, 82, 84, 41, 67, 56, 11] and len(delete_keys) == 0:
-         result = self.insert(insert_keys)
-         print(result == answer1_5)
-      elif insert_keys == [0,17,6,18,11,1,3,16,9,5,2,13,19,8,15,10,14,12,7,4] and len(delete_keys) == 0:
-         result = self.insert(insert_keys)
-         print(result == answer1_6)
-      else:
-         result = self.insert(insert_keys)
+      result = self.insert(insert_keys)
       return result
       # First, run all insertions in insert_keys (the value is simply set to be the key)
       # Then, run all deletions in delete_keys
@@ -746,18 +656,13 @@ class BPTree(object):
 if __name__ == '__main__':
    bpt = BPTree()
    # For Programming Assignment 1/2
-   # print(bpt.show([72, 99, 67, 70, 52, 28, 27, 89, 94, 10], []))
-   # print(bpt.show([35, 71, 44, 60, 81, 61, 29, 95, 63, 23], []))
-   # print(bpt.show([29, 26, 40, 34, 65, 73, 15, 12, 82, 44], []))
-   # print(bpt.show([28, 50, 9, 44, 15, 68, 12, 73, 49, 62], []))
-   # print(bpt.show([3, 97, 18, 96, 82, 84, 41, 67, 56, 11], []))
-
-   bpt.show([72, 99, 67, 70, 52, 28, 27, 89, 94, 10], [])
-   bpt.show([35, 71, 44, 60, 81, 61, 29, 95, 63, 23], [])
-   bpt.show([29, 26, 40, 34, 65, 73, 15, 12, 82, 44], [])
-   bpt.show([28, 50, 9, 44, 15, 68, 12, 73, 49, 62], [])
-   bpt.show([3, 97, 18, 96, 82, 84, 41, 67, 56, 11], [])
+   print(bpt.show([72, 99, 67, 70, 52, 28, 27, 89, 94, 10], []))
+   print(bpt.show([35, 71, 44, 60, 81, 61, 29, 95, 63, 23], []))
+   print(bpt.show([29, 26, 40, 34, 65, 73, 15, 12, 82, 44], []))
+   print(bpt.show([28, 50, 9, 44, 15, 68, 12, 73, 49, 62], []))
+   print(bpt.show([3, 97, 18, 96, 82, 84, 41, 67, 56, 11], []))
    print(bpt.show([0,17,6,18,11,1,3,16,9,5,2,13,19,8,15,10,14,12,7,4], []))
+
 
    # For Programming Assignment 2/2
    #  print(bpt.show([72, 99, 67, 70, 52, 28, 27, 89, 94, 10], [67, 10, 99, 94]))
