@@ -486,6 +486,14 @@ class BPTree(object):
       # 매번 result 업데이트 해서 넣어줘야
       # leaf에 호출할때 횟수별로 시작 조건 다르게 해줘서
 
+   def check(self, b):
+      print("######")
+      print(b.get_values())
+      if b.parent != None:
+         print("Parent:",b.parent.values)
+      else:
+         print("No parent")
+      print("\n")
       
    def insert(self,key_list):
       bnode_list = []
@@ -510,7 +518,10 @@ class BPTree(object):
          bpos = root
          while not bpos.isleaf:
             bpos = bpos.nodes[0].child1
+            self.check(bpos)
          
+         self.check(bpos)
+
          # 해당 B리프 찾기
          while bpos.next != None:
             if bpos.next.get_values()[0] > key:
@@ -615,7 +626,7 @@ class BPTree(object):
       # Insert때와는 다르게 delete일때는 첫줄 바꿔서 해야함
     
    # insert_keys: integer list
-   # delete_keys: integer list (an empty list in the first assignment)
+   # delete_keys: integer list (an empty list in the first assi`gnment)
    # return: result string (sequence of tree representations)
    def show(self, insert_keys, delete_keys):
       # Fill in here
@@ -685,11 +696,11 @@ if __name__ == '__main__':
    # print(bpt.show([28, 50, 9, 44, 15, 68, 12, 73, 49, 62], []))
    # print(bpt.show([3, 97, 18, 96, 82, 84, 41, 67, 56, 11], []))
 
-   bpt.show([72, 99, 67, 70, 52, 28, 27, 89, 94, 10], [])
-   bpt.show([35, 71, 44, 60, 81, 61, 29, 95, 63, 23], [])
-   bpt.show([29, 26, 40, 34, 65, 73, 15, 12, 82, 44], [])
-   bpt.show([28, 50, 9, 44, 15, 68, 12, 73, 49, 62], [])
-   bpt.show([3, 97, 18, 96, 82, 84, 41, 67, 56, 11], [])
+   # bpt.show([72, 99, 67, 70, 52, 28, 27, 89, 94, 10], [])
+   # bpt.show([35, 71, 44, 60, 81, 61, 29, 95, 63, 23], [])
+   # bpt.show([29, 26, 40, 34, 65, 73, 15, 12, 82, 44], [])
+   # bpt.show([28, 50, 9, 44, 15, 68, 12, 73, 49, 62], [])
+   # bpt.show([3, 97, 18, 96, 82, 84, 41, 67, 56, 11], [])
    print(bpt.show([0,17,6,18,11,1,3,16,9,5,2,13,19,8,15,10,14,12,7,4], []))
 
    # For Programming Assignment 2/2

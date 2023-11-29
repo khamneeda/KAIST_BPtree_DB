@@ -486,7 +486,19 @@ class BPTree(object):
       # 매번 result 업데이트 해서 넣어줘야
       # leaf에 호출할때 횟수별로 시작 조건 다르게 해줘서
 
-      
+   def check(self, b,val, key, sig="#"):
+      # if val == key:
+      #    for i in range(10):
+      #       print(sig, end= "")
+      #    print("\nKey:",key)
+      #    print(b.get_values())
+      #    if b.parent != None:
+      #       print("Parent:",b.parent.get_values())
+      #    else:
+      #       print("No parent")
+      #    print("\n")
+      pass
+         
    def insert(self,key_list):
       bnode_list = []
       node_list = []
@@ -508,16 +520,25 @@ class BPTree(object):
          
          # 리프로 가서 그냥 빈자리 앞쪽 b노드에 붙여서 넣기
          bpos = root
+         self.check(bpos,11,key)
          while not bpos.isleaf:
             bpos = bpos.nodes[0].child1
+            self.check(bpos,11,key)
          
+
          # 해당 B리프 찾기
          while bpos.next != None:
             if bpos.next.get_values()[0] > key:
+               # if key == 11: print("@@@@@@here:", bpos.next.get_values()[0])
                break
             else:
                bpos = bpos.next
-         
+            self.check(bpos,9,key,"$")
+      
+         # print("     Prev: ",bpos.prev)
+         # print("     Next: ",bpos.next)
+         self.check(bpos, 9,key,"!")
+
          # 해당 B리프 내에서 위치에 삽입
          values = bpos.get_values()
          for i in range(len(values)):
@@ -537,10 +558,10 @@ class BPTree(object):
             # 해당 층 분할
             bnode_list.append(self.BNode())
             rightbnode = bnode_list[len(bnode_list) - 1]
-            rightbnode.set_parent = bpos.parent
-            rightbnode.set_leaf = bpos.isleaf
+            rightbnode.parent = bpos.parent
+            rightbnode.isleaf = bpos.isleaf
             rightbnode.prev = bpos
-            rightbnode.set_next = bpos.next
+            rightbnode.next = bpos.next
             bpos.next = rightbnode
             rightbnode.depth = bpos.depth
 
@@ -548,11 +569,16 @@ class BPTree(object):
                rightbnode.add_node(bpos.nodes[n],n-2)
             for j in range(3):
                bpos.pop_node(4-j)
+            if not rightbnode.isleaf:
+               rightbnode.pop_node(0)
 
             # 중간친구 올리기
             # 얘가 child update 해줘야
             # greater than equal to가 오른쪽 child2
 
+   # leaf가 아닐 때는 추가하지 않고, 자식도 없애줌
+   # 하나 더 빼줘야한다 라는게 11을 빼줘야
+   
             parent = bpos.parent
             if parent == None:
                bnode_list.append(self.BNode())
@@ -615,7 +641,7 @@ class BPTree(object):
       # Insert때와는 다르게 delete일때는 첫줄 바꿔서 해야함
     
    # insert_keys: integer list
-   # delete_keys: integer list (an empty list in the first assignment)
+   # delete_keys: integer list (an empty list in the first assi`gnment)
    # return: result string (sequence of tree representations)
    def show(self, insert_keys, delete_keys):
       # Fill in here
