@@ -179,117 +179,267 @@ Insert 11
    |- [41, 56, 67]
    `- [82, 84, 96, 97]"""
 
-answer1_6= """Insert 0
-`- [0]
-Insert 17
-`- [0, 17]
-Insert 6
-`- [0, 6, 17]
-Insert 18
-`- [0, 6, 17, 18]
-Insert 11
-`- [11]
-   |- [0, 6]
-   `- [11, 17, 18]
-Insert 1
-`- [11]
-   |- [0, 1, 6]
-   `- [11, 17, 18]
+answer1_6= """Insert 13
+`- [13]
+Insert 28
+`- [13, 28]
 Insert 3
-`- [11]
-   |- [0, 1, 3, 6]
-   `- [11, 17, 18]
-Insert 16
-`- [11]
-   |- [0, 1, 3, 6]
-   `- [11, 16, 17, 18]
-Insert 9
-`- [3, 11]
-   |- [0, 1]
-   |- [3, 6, 9]
-   `- [11, 16, 17, 18]
-Insert 5
-`- [3, 11]
-   |- [0, 1]
-   |- [3, 5, 6, 9]
-   `- [11, 16, 17, 18]
-Insert 2
-`- [3, 11]
-   |- [0, 1, 2]
-   |- [3, 5, 6, 9]
-   `- [11, 16, 17, 18]
-Insert 13
-`- [3, 11, 16]
-   |- [0, 1, 2]
-   |- [3, 5, 6, 9]
-   |- [11, 13]
-   `- [16, 17, 18]
-Insert 19
-`- [3, 11, 16]
-   |- [0, 1, 2]
-   |- [3, 5, 6, 9]
-   |- [11, 13]
-   `- [16, 17, 18, 19]
+`- [3, 13, 28]
 Insert 8
-`- [3, 6, 11, 16]
-   |- [0, 1, 2]
-   |- [3, 5]
-   |- [6, 8, 9]
-   |- [11, 13]
-   `- [16, 17, 18, 19]
-Insert 15
-`- [3, 6, 11, 16]
-   |- [0, 1, 2]
-   |- [3, 5]
-   |- [6, 8, 9]
-   |- [11, 13, 15]
-   `- [16, 17, 18, 19]
+`- [3, 8, 13, 28]
+Insert 20
+`- [13]
+   |- [3, 8]
+   `- [13, 20, 28]
+Insert 0
+`- [13]
+   |- [0, 3, 8]
+   `- [13, 20, 28]
+Insert 21
+`- [13]
+   |- [0, 3, 8]
+   `- [13, 20, 21, 28]
+Insert 24
+`- [13, 21]
+   |- [0, 3, 8]
+   |- [13, 20]
+   `- [21, 24, 28]
+Insert 26
+`- [13, 21]
+   |- [0, 3, 8]
+   |- [13, 20]
+   `- [21, 24, 26, 28]
 Insert 10
-`- [3, 6, 11, 16]
-   |- [0, 1, 2]
-   |- [3, 5]
-   |- [6, 8, 9, 10]
-   |- [11, 13, 15]
-   `- [16, 17, 18, 19]
-Insert 14
-`- [3, 6, 11, 16]
-   |- [0, 1, 2]
-   |- [3, 5]
-   |- [6, 8, 9, 10]
-   |- [11, 13, 14, 15]
-   `- [16, 17, 18, 19]
+`- [13, 21]
+   |- [0, 3, 8, 10]
+   |- [13, 20]
+   `- [21, 24, 26, 28]
+Insert 29
+`- [13, 21, 26]
+   |- [0, 3, 8, 10]
+   |- [13, 20]
+   |- [21, 24]
+   `- [26, 28, 29]
 Insert 12
-`- [11]
-   |- [3, 6]
-   |  |- [0, 1, 2]
-   |  |- [3, 5]
-   |  `- [6, 8, 9, 10]
-   `- [13, 16]
-      |- [11, 12]
-      |- [13, 14, 15]
-      `- [16, 17, 18, 19]
+`- [8, 13, 21, 26]
+   |- [0, 3]
+   |- [8, 10, 12]
+   |- [13, 20]
+   |- [21, 24]
+   `- [26, 28, 29]
+Insert 2
+`- [8, 13, 21, 26]
+   |- [0, 2, 3]
+   |- [8, 10, 12]
+   |- [13, 20]
+   |- [21, 24]
+   `- [26, 28, 29]
+Insert 9
+`- [8, 13, 21, 26]
+   |- [0, 2, 3]
+   |- [8, 9, 10, 12]
+   |- [13, 20]
+   |- [21, 24]
+   `- [26, 28, 29]
+Insert 11
+`- [13]
+   |- [8, 10]
+   |  |- [0, 2, 3]
+   |  |- [8, 9]
+   |  `- [10, 11, 12]
+   `- [21, 26]
+      |- [13, 20]
+      |- [21, 24]
+      `- [26, 28, 29]
+Insert 1
+`- [13]
+   |- [8, 10]
+   |  |- [0, 1, 2, 3]
+   |  |- [8, 9]
+   |  `- [10, 11, 12]
+   `- [21, 26]
+      |- [13, 20]
+      |- [21, 24]
+      `- [26, 28, 29]
+Insert 5
+`- [13]
+   |- [2, 8, 10]
+   |  |- [0, 1]
+   |  |- [2, 3, 5]
+   |  |- [8, 9]
+   |  `- [10, 11, 12]
+   `- [21, 26]
+      |- [13, 20]
+      |- [21, 24]
+      `- [26, 28, 29]
+Insert 14
+`- [13]
+   |- [2, 8, 10]
+   |  |- [0, 1]
+   |  |- [2, 3, 5]
+   |  |- [8, 9]
+   |  `- [10, 11, 12]
+   `- [21, 26]
+      |- [13, 14, 20]
+      |- [21, 24]
+      `- [26, 28, 29]
+Insert 27
+`- [13]
+   |- [2, 8, 10]
+   |  |- [0, 1]
+   |  |- [2, 3, 5]
+   |  |- [8, 9]
+   |  `- [10, 11, 12]
+   `- [21, 26]
+      |- [13, 14, 20]
+      |- [21, 24]
+      `- [26, 27, 28, 29]
+Insert 17
+`- [13]
+   |- [2, 8, 10]
+   |  |- [0, 1]
+   |  |- [2, 3, 5]
+   |  |- [8, 9]
+   |  `- [10, 11, 12]
+   `- [21, 26]
+      |- [13, 14, 17, 20]
+      |- [21, 24]
+      `- [26, 27, 28, 29]
+Insert 22
+`- [13]
+   |- [2, 8, 10]
+   |  |- [0, 1]
+   |  |- [2, 3, 5]
+   |  |- [8, 9]
+   |  `- [10, 11, 12]
+   `- [21, 26]
+      |- [13, 14, 17, 20]
+      |- [21, 22, 24]
+      `- [26, 27, 28, 29]
+Insert 16
+`- [13]
+   |- [2, 8, 10]
+   |  |- [0, 1]
+   |  |- [2, 3, 5]
+   |  |- [8, 9]
+   |  `- [10, 11, 12]
+   `- [16, 21, 26]
+      |- [13, 14]
+      |- [16, 17, 20]
+      |- [21, 22, 24]
+      `- [26, 27, 28, 29]
+Insert 25
+`- [13]
+   |- [2, 8, 10]
+   |  |- [0, 1]
+   |  |- [2, 3, 5]
+   |  |- [8, 9]
+   |  `- [10, 11, 12]
+   `- [16, 21, 26]
+      |- [13, 14]
+      |- [16, 17, 20]
+      |- [21, 22, 24, 25]
+      `- [26, 27, 28, 29]
 Insert 7
-`- [11]
-   |- [3, 6, 8]
-   |  |- [0, 1, 2]
-   |  |- [3, 5]
-   |  |- [6, 7]
-   |  `- [8, 9, 10]
-   `- [13, 16]
-      |- [11, 12]
-      |- [13, 14, 15]
-      `- [16, 17, 18, 19]
+`- [13]
+   |- [2, 8, 10]
+   |  |- [0, 1]
+   |  |- [2, 3, 5, 7]
+   |  |- [8, 9]
+   |  `- [10, 11, 12]
+   `- [16, 21, 26]
+      |- [13, 14]
+      |- [16, 17, 20]
+      |- [21, 22, 24, 25]
+      `- [26, 27, 28, 29]
+Insert 23
+`- [13]
+   |- [2, 8, 10]
+   |  |- [0, 1]
+   |  |- [2, 3, 5, 7]
+   |  |- [8, 9]
+   |  `- [10, 11, 12]
+   `- [16, 21, 23, 26]
+      |- [13, 14]
+      |- [16, 17, 20]
+      |- [21, 22]
+      |- [23, 24, 25]
+      `- [26, 27, 28, 29]
+Insert 18
+`- [13]
+   |- [2, 8, 10]
+   |  |- [0, 1]
+   |  |- [2, 3, 5, 7]
+   |  |- [8, 9]
+   |  `- [10, 11, 12]
+   `- [16, 21, 23, 26]
+      |- [13, 14]
+      |- [16, 17, 18, 20]
+      |- [21, 22]
+      |- [23, 24, 25]
+      `- [26, 27, 28, 29]
+Insert 19
+`- [13, 21]
+   |- [2, 8, 10]
+   |  |- [0, 1]
+   |  |- [2, 3, 5, 7]
+   |  |- [8, 9]
+   |  `- [10, 11, 12]
+   |- [16, 18]
+   |  |- [13, 14]
+   |  |- [16, 17]
+   |  `- [18, 19, 20]
+   `- [23, 26]
+      |- [21, 22]
+      |- [23, 24, 25]
+      `- [26, 27, 28, 29]
+Insert 15
+`- [13, 21]
+   |- [2, 8, 10]
+   |  |- [0, 1]
+   |  |- [2, 3, 5, 7]
+   |  |- [8, 9]
+   |  `- [10, 11, 12]
+   |- [16, 18]
+   |  |- [13, 14, 15]
+   |  |- [16, 17]
+   |  `- [18, 19, 20]
+   `- [23, 26]
+      |- [21, 22]
+      |- [23, 24, 25]
+      `- [26, 27, 28, 29]
+Insert 6
+`- [13, 21]
+   |- [2, 5, 8, 10]
+   |  |- [0, 1]
+   |  |- [2, 3]
+   |  |- [5, 6, 7]
+   |  |- [8, 9]
+   |  `- [10, 11, 12]
+   |- [16, 18]
+   |  |- [13, 14, 15]
+   |  |- [16, 17]
+   |  `- [18, 19, 20]
+   `- [23, 26]
+      |- [21, 22]
+      |- [23, 24, 25]
+      `- [26, 27, 28, 29]
 Insert 4
-`- [11]
-   |- [3, 6, 8]
-   |  |- [0, 1, 2]
-   |  |- [3, 4, 5]
-   |  |- [6, 7]
-   |  `- [8, 9, 10]
-   `- [13, 16]
-      |- [11, 12]
-      |- [13, 14, 15]
-      `- [16, 17, 18, 19]"""
+`- [13, 21]
+   |- [2, 5, 8, 10]
+   |  |- [0, 1]
+   |  |- [2, 3, 4]
+   |  |- [5, 6, 7]
+   |  |- [8, 9]
+   |  `- [10, 11, 12]
+   |- [16, 18]
+   |  |- [13, 14, 15]
+   |  |- [16, 17]
+   |  `- [18, 19, 20]
+   `- [23, 26]
+      |- [21, 22]
+      |- [23, 24, 25]
+      `- [26, 27, 28, 29]"""
 
 answer2_1 = """
 Delete 67
@@ -456,6 +606,25 @@ class BPTree(object):
       def get_parent(self):
          return self.parent
 
+   def debug(self, bnode, key, searchkey, char):
+      if key == searchkey:
+         print()
+         for i in range(10):
+            print(char, end="")
+         print("\nBnode:",bnode.get_values())
+         print("Parent:",bnode.parent.get_values())
+         print("Leaf:",str(bnode.isleaf))
+         print("prev:",bnode.prev.get_values())
+         print("next:",bnode.next.get_values())
+         print("depth:",bnode.depth)
+         print("**Node info**")
+         for node in bnode.nodes:
+            print("Node value:", str(node.value))
+            if node.child1 != None:
+               print("child1:",node.child1.get_values())
+            if node.child2 != None:
+               print("child2:",node.child2.get_values(),"\n")
+
    def stringmake(self, bnode, root, last_list, last, result, first):
       # 위치 프린트
       result = result + "\n"
@@ -543,18 +712,32 @@ class BPTree(object):
          while bpos.get_num_nodes() == 5:          
             upnode = bpos.nodes[2]
 
+# leaf인 경우
+# leaf가 아닌 곳에 올라와서 문제 생긴 경우
+
             # 해당 층 분할
             bnode_list.append(self.BNode())
             rightbnode = bnode_list[len(bnode_list) - 1]
             rightbnode.parent = bpos.parent
             rightbnode.isleaf = bpos.isleaf
-            rightbnode.prev = bpos
-            rightbnode.next = bpos.next
-            bpos.next = rightbnode
+            if bpos.isleaf:
+               rightbnode.prev = bpos
+               rightbnode.next = bpos.next
+               bpos.next = rightbnode
             rightbnode.depth = bpos.depth
 
+            # bnode내 노드 개수 맞추기
             for n in range(2,5):
                rightbnode.add_node(bpos.nodes[n],n-2)
+            #right노드 휘하 애들 parent 업데이트
+            #bpos.node들의 child1의 첫번째 애가 upnode보다 크거나 같을 경우 오른쪽 편입/ child2도 오른쪽 편입(무조건)
+            for i in range(5):
+               if bpos.nodes[i].child1 != None:
+                  if bpos.nodes[i].child1.nodes[0].value >= upnode.value:
+                     bpos.nodes[i].child1.parent = rightbnode
+            if bpos.nodes[4].child2 != None:
+               bpos.nodes[4].child2.parent = rightbnode
+
             for j in range(3):
                bpos.pop_node(4-j)
             if not rightbnode.isleaf:
@@ -563,9 +746,8 @@ class BPTree(object):
             # 중간친구 올리기
             # 얘가 child update 해줘야
             # greater than equal to가 오른쪽 child2
-
-   # leaf가 아닐 때는 추가하지 않고, 자식도 없애줌
-   # 하나 더 빼줘야한다 라는게 11을 빼줘야
+            upnode.child1 = bpos
+            upnode.child2 = rightbnode
    
             parent = bpos.parent
             if parent == None:
@@ -585,21 +767,19 @@ class BPTree(object):
                   i += 1
                else:
                   parent.nodes[i].child1 = rightbnode ## 여기 뭔가 있는듯
+               if i>0:
+                  parent.nodes[i-1].child2 = bpos
                parent.add_node(upnode, i)
-
-
-            upnode.child1 = bpos
-            upnode.child2 = rightbnode
-
+            
+            # Next cycle
             bpos = parent
-            while parent.parent != None:
-               parent = parent.parent
-            root = parent
+         
 
          # string 만들기
-         bnode = root
-         maxdepth = root.depth
-         result = self.stringmake(bnode, True, [], True, result, True)
+         while bpos.parent != None:
+            bpos = bpos.parent
+         maxdepth = bpos.depth
+         result = self.stringmake(bpos, True, [], True, result, True)
 
       return result
 
@@ -607,6 +787,8 @@ class BPTree(object):
    # key: integer
    def delete(self, key):
       # Fill in here
+      # 논리적으로 수도코드 먼저 줄글로 써두기
+      # 나중에는 과부화와서 그대로 구현하는걸 해야됨. 먼저 디자인
       a = 1 # bogus code
       # Insert때와는 다르게 delete일때는 첫줄 바꿔서 해야함
     
@@ -615,7 +797,8 @@ class BPTree(object):
    # return: result string (sequence of tree representations)
    def show(self, insert_keys, delete_keys):
       # Fill in here
-      result = self.insert(insert_keys)
+      ins = insert_keys[:]
+      result = self.insert(ins)
       return result
       # First, run all insertions in insert_keys (the value is simply set to be the key)
       # Then, run all deletions in delete_keys
@@ -656,13 +839,12 @@ class BPTree(object):
 if __name__ == '__main__':
    bpt = BPTree()
    # For Programming Assignment 1/2
-   print(bpt.show([72, 99, 67, 70, 52, 28, 27, 89, 94, 10], []))
-   print(bpt.show([35, 71, 44, 60, 81, 61, 29, 95, 63, 23], []))
-   print(bpt.show([29, 26, 40, 34, 65, 73, 15, 12, 82, 44], []))
-   print(bpt.show([28, 50, 9, 44, 15, 68, 12, 73, 49, 62], []))
-   print(bpt.show([3, 97, 18, 96, 82, 84, 41, 67, 56, 11], []))
-   print(bpt.show([0,17,6,18,11,1,3,16,9,5,2,13,19,8,15,10,14,12,7,4], []))
-
+   # print(bpt.show([72, 99, 67, 70, 52, 28, 27, 89, 94, 10], []))
+   # print(bpt.show([35, 71, 44, 60, 81, 61, 29, 95, 63, 23], []))
+   # print(bpt.show([29, 26, 40, 34, 65, 73, 15, 12, 82, 44], []))
+   # print(bpt.show([28, 50, 9, 44, 15, 68, 12, 73, 49, 62], []))
+   # print(bpt.show([3, 97, 18, 96, 82, 84, 41, 67, 56, 11], []))
+   # print(bpt.show([0,17,6,18,11,1,3,16,9,5,2,13,19,8,15,10,14,12,7,4], []))
 
    # For Programming Assignment 2/2
    #  print(bpt.show([72, 99, 67, 70, 52, 28, 27, 89, 94, 10], [67, 10, 99, 94]))
