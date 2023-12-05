@@ -565,9 +565,9 @@ class BPTree(object):
                   break
             
             assert(receive_bnode.get_num_nodes <5 and receive_bnode.get_num_nodes > 1)
+            recv_org_num = receive_bnode.get_num_nodes()
             # merge
             # 왼쪽에서 가져오는경우에는 parent value 업데이트 해줘야함 ? 이게 먼말 둘다 해줘야함
-            recv_org_num = receive_bnode.get_num_nodes()
             if recv_org_num <4:
                # 부모노드
                for i in range(bnode.parent.get_num_nodes()):
@@ -622,60 +622,119 @@ class BPTree(object):
                      if bnode.prev != None:
                         bnode.prev.next = receive_bnode
 
+
+               # 이거 지금은 merge 소속인데 전체로 해야하는지 판단 ####################################
+               # 합쳐서 넘었을 경우 --> 셋으로 분할: 원래: 2or 3개 / 올라가는애 하나 / 나머지 2개
+               if receive_bnode.get_num_nodes() >4:
+
+                  # 분할한 오른쪽 노드로 옮기기
+                  bnode_list.append(self.BNode())
+                  newbnode = bnode_list[len(bnode_list) - 1]
+                  newbnode.parent = receive_bnode.parent
+                  newbnode.isleaf = receive_bnode.isleaf
+                  newbnode.depth = receive_bnode.depth
+                  newbnode.prev = receive_bnode
+                  newbnode.next = receive_bnode.next
+                  receive_bnode.next = newbnode
+                  newbnode.add_node(receive_bnode.pop_nodes(receive_bnode.get_num_nodes()-1), 0)
+                  newbnode.add_node(receive_bnode.pop_nodes(receive_bnode.get_num_nodes()-1), 0)
+                  
+                  #위에 추가
+                  upnode = receive_bnode.pop_nodes(receive_bnode.get_num_nodes()-1)
+                  upnode.child1 = receive_bnode
+                  upnode.child2 = newbnode
+                  
+                  # 위에 노드가 없을 경우: 아마 이런 경우 없을거임
+                  if newbnode.parent == None:
+                     print("Why depth increase?") ##########################################제출전 제거. assert 다 제거
+                     bnode_list.append(self.BNode())
+                     newparent = bnode_list[len(bnode_list) - 1]
+                     newparent.add_node(upnode,0)
+                     newbnode.parent = newparent
+                     receive_bnode.parent = newparent
+                     newparent.isleaf = False
+                     newparent.depth = newbnode.depth + 1
+
+                  # parent에 upnode 추가
+                  else:
+                     for i in range(newbnode.parent.get_num_nodes()):
+                        if newbnode.parent.nodes[i] > upnode.value:
+                           break
+                     if newbnode.parent.nodes[newbnode.parent.get_num_nodes()-1] < upnode.value:
+                        i += 1
+                     newbnode.parent.add_node(upnode,i)
+
+               # 이거 위치 여기인지 아니면 625번줄 합쳐서 넘었을 경우 위인지 생각 ###################################
                # 부모노드 제거 recursive 실행
                # 제거노드를 child2로 가진 부모bnode 내 node key
                self.delete_entry(root, bnode.parent, parent_node.value, bnode_list, node_list)
+         
 
-
-            # 합쳐서 넘었을 경우 --> 셋으로 분할: 원래: 2or 3개 / 올라가는애 하나 / 나머지 2개
-            if receive_bnode.get_num_nodes() >4:
-
-               # 분할한 오른쪽 노드로 옮기기
-               bnode_list.append(self.BNode())
-               newbnode = bnode_list[len(bnode_list) - 1]
-               newbnode.parent = receive_bnode.parent
-               newbnode.isleaf = receive_bnode.isleaf
-               newbnode.depth = receive_bnode.depth
-               newbnode.prev = receive_bnode
-               newbnode.next = receive_bnode.next
-               receive_bnode.next = newbnode
-               newbnode.add_node(receive_bnode.pop_nodes(receive_bnode.get_num_nodes()-1), 0)
-               newbnode.add_node(receive_bnode.pop_nodes(receive_bnode.get_num_nodes()-1), 0)
-               
-               #위에 추가
-               upnode = receive_bnode.pop_nodes(receive_bnode.get_num_nodes()-1)
-               upnode.child1 = receive_bnode
-               upnode.child2 = newbnode
-               
-               # 위에 노드가 없을 경우: 아마 이런 경우 없을거임
-               if newbnode.parent == None:
-                  print("Why depth increase?") ##########################################제출전 제거. assert 다 제거
-                  bnode_list.append(self.BNode())
-                  newparent = bnode_list[len(bnode_list) - 1]
-                  newparent.add_node(upnode,0)
-                  newbnode.parent = newparent
-                  receive_bnode.parent = newparent
-                  newparent.isleaf = False
-                  newparent.depth = newbnode.depth + 1
-
-               # parent에 upnode 추가
-               else:
-                  for i in range(newbnode.parent.get_num_nodes()):
-                     if newbnode.parent.nodes[i] > upnode.value:
-                        break
-                  if newbnode.parent.nodes[newbnode.parent.get_num_nodes()-1] < upnode.value:
-                     i += 1
-                  newbnode.parent.add_node(upnode,i)
- 
-            
+            #recv_org_num = receive_bnode.get_num_nodes()
+            #node left 
             # re-distribution
             else: 
-               pass
 
+               # leaf인 경우
+               if bnode.isleaf:
+                  
+                  # 왼쪽"에서" 옮길 경우
+                  if node_left:
+                     move_node = receive_bnode.pop_node(receive_bnode.get_num_nodes()-1)
+                     for i in range(bnode.parent.get_num_nodes()):
+                        if bnode.parent.nodes[i].child2 == bnode:
+                           break
+                     bnode.parent.nodes[i].value = move_node.value
+                     bnode.add_node(move_node,0)
 
+                  # 오른쪽"에서" 옮길 경우
+                  else:
+                     move_node = receive_bnode.pop_node(0)
+                     for i in range(bnode.parent.get_num_nodes()):
+                        if bnode.parent.nodes[i].child1 == bnode:
+                           break
+                     # 알바노?
+                     bnode.add_node(move_node,1)
+                  
+               #leaf 아닌경우 마찬가지로 부모거 땡겨서 가져와야함 수도코드 참조
+               # 왼쪽거를 올리고 부모거를 받는다
+               # child값 일일이 변경 귀찮아서 그냥 왼쪽애노드를 오른쪽으로 옮기고
+               # 옮긴노드랑 부모노드의 값만 따로 미리 받아뒀다 업데이트
+               else:
+
+                  # 왼쪽에서 옮길 경우
+                  if node_left:
+                     # 값 미리 빼줌
+                     for i in range(bnode.parent.get_num_nodes()):
+                        if bnode.parent.nodes[i].child2 == bnode:
+                           break
+                     par_val = bnode.parent.nodes[i].value
+                     move_val = receive_bnode.nodes[receive_bnode.get_num_nodes()-1].value
+                     
+                     # 노드 옮김 및 값 업데이트
+                     move_node = receive_bnode.pop_node(receive_bnode.get_num_nodes()-1)
+                     bnode.add_node(move_node,0)
+                     move_node.value = par_val
+                     bnode.parent.nodes[i].value = move_val
+                  
+                  # 오른쪽에서 옮길 경우
+                  else:
+                     for i in range(bnode.parent.get_num_nodes()):
+                        if bnode.parent.nodes[i].child1 == bnode:
+                           break
+                        assert(i!=1)
+                     par_val = bnode.parent.nodes[i].value
+                     move_val = receive_bnode.nodes[0].value
+
+                     move_node = receive_bnode.pop_node(0)
+                     bnode.add_node(move_node, 1)
+                     move_node.value = par_val
+                     bnode.parent.nodes[i].value = move_val
+                  
          # 부모 없는 경우
          else:
             #아무것도 안함
+            pass
 
 
    # key: integer
