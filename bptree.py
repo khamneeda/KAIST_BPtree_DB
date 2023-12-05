@@ -1,3 +1,4 @@
+import random
 # Check carefully the format of the tree representation in text
 # Note that the last node in each level (including the root) is denoted by `-
 
@@ -37,41 +38,6 @@ Insert 10
    |- [70, 72]
    `- [89, 94, 99]"""
 
-answer1_2 = """Insert 35
-`- [35]
-Insert 71
-`- [35, 71]
-Insert 44
-`- [35, 44, 71]
-Insert 60
-`- [35, 44, 60, 71]
-Insert 81
-`- [60]
-   |- [35, 44]
-   `- [60, 71, 81]
-Insert 61
-`- [60]
-   |- [35, 44]
-   `- [60, 61, 71, 81]
-Insert 29
-`- [60]
-   |- [29, 35, 44]
-   `- [60, 61, 71, 81]
-Insert 95
-`- [60, 71]
-   |- [29, 35, 44]
-   |- [60, 61]
-   `- [71, 81, 95]
-Insert 63
-`- [60, 71]
-   |- [29, 35, 44]
-   |- [60, 61, 63]
-   `- [71, 81, 95]
-Insert 23
-`- [60, 71]
-   |- [23, 29, 35, 44]
-   |- [60, 61, 63]
-   `- [71, 81, 95]"""
 
 answer1_3 = """Insert 29
 `- [29]
@@ -179,268 +145,6 @@ Insert 11
    |- [41, 56, 67]
    `- [82, 84, 96, 97]"""
 
-answer1_6= """Insert 13
-`- [13]
-Insert 28
-`- [13, 28]
-Insert 3
-`- [3, 13, 28]
-Insert 8
-`- [3, 8, 13, 28]
-Insert 20
-`- [13]
-   |- [3, 8]
-   `- [13, 20, 28]
-Insert 0
-`- [13]
-   |- [0, 3, 8]
-   `- [13, 20, 28]
-Insert 21
-`- [13]
-   |- [0, 3, 8]
-   `- [13, 20, 21, 28]
-Insert 24
-`- [13, 21]
-   |- [0, 3, 8]
-   |- [13, 20]
-   `- [21, 24, 28]
-Insert 26
-`- [13, 21]
-   |- [0, 3, 8]
-   |- [13, 20]
-   `- [21, 24, 26, 28]
-Insert 10
-`- [13, 21]
-   |- [0, 3, 8, 10]
-   |- [13, 20]
-   `- [21, 24, 26, 28]
-Insert 29
-`- [13, 21, 26]
-   |- [0, 3, 8, 10]
-   |- [13, 20]
-   |- [21, 24]
-   `- [26, 28, 29]
-Insert 12
-`- [8, 13, 21, 26]
-   |- [0, 3]
-   |- [8, 10, 12]
-   |- [13, 20]
-   |- [21, 24]
-   `- [26, 28, 29]
-Insert 2
-`- [8, 13, 21, 26]
-   |- [0, 2, 3]
-   |- [8, 10, 12]
-   |- [13, 20]
-   |- [21, 24]
-   `- [26, 28, 29]
-Insert 9
-`- [8, 13, 21, 26]
-   |- [0, 2, 3]
-   |- [8, 9, 10, 12]
-   |- [13, 20]
-   |- [21, 24]
-   `- [26, 28, 29]
-Insert 11
-`- [13]
-   |- [8, 10]
-   |  |- [0, 2, 3]
-   |  |- [8, 9]
-   |  `- [10, 11, 12]
-   `- [21, 26]
-      |- [13, 20]
-      |- [21, 24]
-      `- [26, 28, 29]
-Insert 1
-`- [13]
-   |- [8, 10]
-   |  |- [0, 1, 2, 3]
-   |  |- [8, 9]
-   |  `- [10, 11, 12]
-   `- [21, 26]
-      |- [13, 20]
-      |- [21, 24]
-      `- [26, 28, 29]
-Insert 5
-`- [13]
-   |- [2, 8, 10]
-   |  |- [0, 1]
-   |  |- [2, 3, 5]
-   |  |- [8, 9]
-   |  `- [10, 11, 12]
-   `- [21, 26]
-      |- [13, 20]
-      |- [21, 24]
-      `- [26, 28, 29]
-Insert 14
-`- [13]
-   |- [2, 8, 10]
-   |  |- [0, 1]
-   |  |- [2, 3, 5]
-   |  |- [8, 9]
-   |  `- [10, 11, 12]
-   `- [21, 26]
-      |- [13, 14, 20]
-      |- [21, 24]
-      `- [26, 28, 29]
-Insert 27
-`- [13]
-   |- [2, 8, 10]
-   |  |- [0, 1]
-   |  |- [2, 3, 5]
-   |  |- [8, 9]
-   |  `- [10, 11, 12]
-   `- [21, 26]
-      |- [13, 14, 20]
-      |- [21, 24]
-      `- [26, 27, 28, 29]
-Insert 17
-`- [13]
-   |- [2, 8, 10]
-   |  |- [0, 1]
-   |  |- [2, 3, 5]
-   |  |- [8, 9]
-   |  `- [10, 11, 12]
-   `- [21, 26]
-      |- [13, 14, 17, 20]
-      |- [21, 24]
-      `- [26, 27, 28, 29]
-Insert 22
-`- [13]
-   |- [2, 8, 10]
-   |  |- [0, 1]
-   |  |- [2, 3, 5]
-   |  |- [8, 9]
-   |  `- [10, 11, 12]
-   `- [21, 26]
-      |- [13, 14, 17, 20]
-      |- [21, 22, 24]
-      `- [26, 27, 28, 29]
-Insert 16
-`- [13]
-   |- [2, 8, 10]
-   |  |- [0, 1]
-   |  |- [2, 3, 5]
-   |  |- [8, 9]
-   |  `- [10, 11, 12]
-   `- [16, 21, 26]
-      |- [13, 14]
-      |- [16, 17, 20]
-      |- [21, 22, 24]
-      `- [26, 27, 28, 29]
-Insert 25
-`- [13]
-   |- [2, 8, 10]
-   |  |- [0, 1]
-   |  |- [2, 3, 5]
-   |  |- [8, 9]
-   |  `- [10, 11, 12]
-   `- [16, 21, 26]
-      |- [13, 14]
-      |- [16, 17, 20]
-      |- [21, 22, 24, 25]
-      `- [26, 27, 28, 29]
-Insert 7
-`- [13]
-   |- [2, 8, 10]
-   |  |- [0, 1]
-   |  |- [2, 3, 5, 7]
-   |  |- [8, 9]
-   |  `- [10, 11, 12]
-   `- [16, 21, 26]
-      |- [13, 14]
-      |- [16, 17, 20]
-      |- [21, 22, 24, 25]
-      `- [26, 27, 28, 29]
-Insert 23
-`- [13]
-   |- [2, 8, 10]
-   |  |- [0, 1]
-   |  |- [2, 3, 5, 7]
-   |  |- [8, 9]
-   |  `- [10, 11, 12]
-   `- [16, 21, 23, 26]
-      |- [13, 14]
-      |- [16, 17, 20]
-      |- [21, 22]
-      |- [23, 24, 25]
-      `- [26, 27, 28, 29]
-Insert 18
-`- [13]
-   |- [2, 8, 10]
-   |  |- [0, 1]
-   |  |- [2, 3, 5, 7]
-   |  |- [8, 9]
-   |  `- [10, 11, 12]
-   `- [16, 21, 23, 26]
-      |- [13, 14]
-      |- [16, 17, 18, 20]
-      |- [21, 22]
-      |- [23, 24, 25]
-      `- [26, 27, 28, 29]
-Insert 19
-`- [13, 21]
-   |- [2, 8, 10]
-   |  |- [0, 1]
-   |  |- [2, 3, 5, 7]
-   |  |- [8, 9]
-   |  `- [10, 11, 12]
-   |- [16, 18]
-   |  |- [13, 14]
-   |  |- [16, 17]
-   |  `- [18, 19, 20]
-   `- [23, 26]
-      |- [21, 22]
-      |- [23, 24, 25]
-      `- [26, 27, 28, 29]
-Insert 15
-`- [13, 21]
-   |- [2, 8, 10]
-   |  |- [0, 1]
-   |  |- [2, 3, 5, 7]
-   |  |- [8, 9]
-   |  `- [10, 11, 12]
-   |- [16, 18]
-   |  |- [13, 14, 15]
-   |  |- [16, 17]
-   |  `- [18, 19, 20]
-   `- [23, 26]
-      |- [21, 22]
-      |- [23, 24, 25]
-      `- [26, 27, 28, 29]
-Insert 6
-`- [13, 21]
-   |- [2, 5, 8, 10]
-   |  |- [0, 1]
-   |  |- [2, 3]
-   |  |- [5, 6, 7]
-   |  |- [8, 9]
-   |  `- [10, 11, 12]
-   |- [16, 18]
-   |  |- [13, 14, 15]
-   |  |- [16, 17]
-   |  `- [18, 19, 20]
-   `- [23, 26]
-      |- [21, 22]
-      |- [23, 24, 25]
-      `- [26, 27, 28, 29]
-Insert 4
-`- [13, 21]
-   |- [2, 5, 8, 10]
-   |  |- [0, 1]
-   |  |- [2, 3, 4]
-   |  |- [5, 6, 7]
-   |  |- [8, 9]
-   |  `- [10, 11, 12]
-   |- [16, 18]
-   |  |- [13, 14, 15]
-   |  |- [16, 17]
-   |  `- [18, 19, 20]
-   `- [23, 26]
-      |- [21, 22]
-      |- [23, 24, 25]
-      `- [26, 27, 28, 29]"""
-
 answer2_1 = """
 Delete 67
 `- [28, 70, 89]
@@ -462,6 +166,42 @@ Delete 94
 `- [70]
    |- [27, 28, 52]
    `- [70, 72, 89]"""
+
+answer1_2 = """Insert 35
+`- [35]
+Insert 71
+`- [35, 71]
+Insert 44
+`- [35, 44, 71]
+Insert 60
+`- [35, 44, 60, 71]
+Insert 81
+`- [60]
+   |- [35, 44]
+   `- [60, 71, 81]
+Insert 61
+`- [60]
+   |- [35, 44]
+   `- [60, 61, 71, 81]
+Insert 29
+`- [60]
+   |- [29, 35, 44]
+   `- [60, 61, 71, 81]
+Insert 95
+`- [60, 71]
+   |- [29, 35, 44]
+   |- [60, 61]
+   `- [71, 81, 95]
+Insert 63
+`- [60, 71]
+   |- [29, 35, 44]
+   |- [60, 61, 63]
+   `- [71, 81, 95]
+Insert 23
+`- [60, 71]
+   |- [23, 29, 35, 44]
+   |- [60, 61, 63]
+   `- [71, 81, 95]"""
 
 answer2_2 = """
 Delete 71
@@ -664,7 +404,7 @@ class BPTree(object):
 
       return result
          
-   def insert(self,key_list):
+   def insert(self,key_list, delete, del_keys):
       bnode_list = []
       node_list = []
       result = "Insert " + str(key_list[0]) + "\n`- [" + str(key_list[0]) + "]"
@@ -712,18 +452,18 @@ class BPTree(object):
          while bpos.get_num_nodes() == 5:          
             upnode = bpos.nodes[2]
 
-# leaf인 경우
-# leaf가 아닌 곳에 올라와서 문제 생긴 경우
+            # leaf인 경우
+            # leaf가 아닌 곳에 올라와서 문제 생긴 경우
 
             # 해당 층 분할
             bnode_list.append(self.BNode())
             rightbnode = bnode_list[len(bnode_list) - 1]
             rightbnode.parent = bpos.parent
             rightbnode.isleaf = bpos.isleaf
-            if bpos.isleaf:
-               rightbnode.prev = bpos
-               rightbnode.next = bpos.next
-               bpos.next = rightbnode
+            # if bpos.isleaf:
+            rightbnode.prev = bpos
+            rightbnode.next = bpos.next
+            bpos.next = rightbnode
             rightbnode.depth = bpos.depth
 
             # bnode내 노드 개수 맞추기
@@ -781,24 +521,317 @@ class BPTree(object):
          maxdepth = bpos.depth
          result = self.stringmake(bpos, True, [], True, result, True)
 
+      if delete == True:
+         return self.delete_list(del_keys, bpos, bnode_list, node_list)
+
       return result
+
+# 로컬이라 반영 안될경우 리스트도 넣어주고, 없앨때마다 전체 리스트서 빼주기
+   def delete_entry(self, root, bnode, key, bnode_list, node_list):
+      
+      # delete node from bnode
+      values = bnode.get_values()
+      for i in range(len(values)):
+         if key == values[i]:
+            break
+      bnode.pop_node(i)
+
+      # 루트 조건시 업데이트
+      if bnode.parent == None and bnode.nodes[0].child2 == None:
+         root = bnode.nodes[0].child1
+         bnode.nodes[0].child1.parent = None
+         bnode.nodes.pop()
+         if bnode.prev != None:
+            bnode.prev.next = bnode.next
+         if bnode.next != None:
+            bnode.next.prev = bnode.prev
+      
+      # 연쇄조건 시작
+      elif bnode.get_num_nodes() < 2:
+         assert(bnode.get_num_nodes() == 1)
+         
+         # 부모 있는 경우에만 실행 -> 없을 경우 루트라 시작 안해도 됨
+         if bnode.parent != None:
+            # 왼쪽 노드 없는 경우
+            node_left = False
+            receive_bnode = bnode.parent.nodes[0].child2
+            assert(receive_bnode != None)
+            
+            # 왼쪽 노드 있는 경우
+            for i in range(bnode.parent.get_num_nodes()):
+               if bnode.parent.nodes[i].child2 == bnode:
+                  node_left = True 
+                  receive_bnode = bnode.parent.nodes[i].child1
+                  break
+            
+            assert(receive_bnode.get_num_nodes <5 and receive_bnode.get_num_nodes > 1)
+            # merge
+            # 왼쪽에서 가져오는경우에는 parent value 업데이트 해줘야함 ? 이게 먼말 둘다 해줘야함
+            recv_org_num = receive_bnode.get_num_nodes()
+            if recv_org_num <4:
+               # 부모노드
+               for i in range(bnode.parent.get_num_nodes()):
+                  if bnode.parent.nodes[i].child2 == bnode:
+                     break
+               parent_node = bnode.parent.nodes[i]
+               
+               move_node = bnode.pop_node(0)
+               #리프노드일 경우
+               if bnode.isleaf:
+               
+                  # 왼쪽 노드로 옮기는 경우
+                  if node_left:
+                     receive_bnode.add_node(move_node, receive_bnode.get_num_node())
+                     receive_bnode.next = bnode.next
+                     if bnode.next != None:
+                        bnode.next.prev = receive_bnode
+
+                  # 오른쪽 노드로 옮기는 경우
+                  else:
+                     receive_bnode.add_node(move_node,0)
+                     receive_bnode.prev = bnode.prev
+                     if bnode.prev != None:
+                        bnode.prev.next = receive_bnode
+               
+               # 리프노드가 아닌 경우
+               else:
+                  #parent의 자신 bnode를 child2로 가리키는 value 추가
+                  node_list.append(self.Node(key))
+                  down_pnode = node_list[len(node_list) - 1]
+                  down_pnode.value = parent_node.value
+
+                  # 왼쪽 노드로 옮기는 경우
+                  if node_left:
+                     #parent 먼저 넣고, 다음으로 자기 넣어야함
+                     receive_bnode.add_node(down_pnode, receive_bnode.get_num_node())   
+                     receive_bnode.add_node(move_node, receive_bnode.get_num_node())        
+                     down_pnode.child1 = receive_bnode.nodes[recv_org_num-1].child2        
+                     down_pnode.child2 = move_node.child1
+                     receive_bnode.next = bnode.next
+                     if bnode.next != None:
+                        bnode.next.prev = receive_bnode
+         
+                  # 오른쪽 노드로 옮기는 경우
+                  else:
+                     # 자기, parent, 원래 순서대로 되도록 넣어야
+                     down_pnode.child2 = receive_bnode.nodes[0].child1        
+                     down_pnode.child1 = move_node.child2
+                     receive_bnode.add_node(down_pnode, 0)   
+                     receive_bnode.add_node(move_node, 0)        
+                     receive_bnode.prev = bnode.prev
+                     if bnode.prev != None:
+                        bnode.prev.next = receive_bnode
+
+               # 부모노드 제거 recursive 실행
+               # 제거노드를 child2로 가진 부모bnode 내 node key
+               self.delete_entry(root, bnode.parent, parent_node.value, bnode_list, node_list)
+
+
+            # 합쳐서 넘었을 경우 --> 셋으로 분할: 원래: 2or 3개 / 올라가는애 하나 / 나머지 2개
+            if receive_bnode.get_num_nodes() >4:
+
+               # 분할한 오른쪽 노드로 옮기기
+               bnode_list.append(self.BNode())
+               newbnode = bnode_list[len(bnode_list) - 1]
+               newbnode.parent = receive_bnode.parent
+               newbnode.isleaf = receive_bnode.isleaf
+               newbnode.depth = receive_bnode.depth
+               newbnode.prev = receive_bnode
+               newbnode.next = receive_bnode.next
+               receive_bnode.next = newbnode
+               newbnode.add_node(receive_bnode.pop_nodes(receive_bnode.get_num_nodes()-1), 0)
+               newbnode.add_node(receive_bnode.pop_nodes(receive_bnode.get_num_nodes()-1), 0)
+               
+               #위에 추가
+               upnode = receive_bnode.pop_nodes(receive_bnode.get_num_nodes()-1)
+               upnode.child1 = receive_bnode
+               upnode.child2 = newbnode
+               
+               # 위에 노드가 없을 경우: 아마 이런 경우 없을거임
+               if newbnode.parent == None:
+                  print("Why depth increase?") ##########################################제출전 제거. assert 다 제거
+                  bnode_list.append(self.BNode())
+                  newparent = bnode_list[len(bnode_list) - 1]
+                  newparent.add_node(upnode,0)
+                  newbnode.parent = newparent
+                  receive_bnode.parent = newparent
+                  newparent.isleaf = False
+                  newparent.depth = newbnode.depth + 1
+
+               # parent에 upnode 추가
+               else:
+                  for i in range(newbnode.parent.get_num_nodes()):
+                     if newbnode.parent.nodes[i] > upnode.value:
+                        break
+                  if newbnode.parent.nodes[newbnode.parent.get_num_nodes()-1] < upnode.value:
+                     i += 1
+                  newbnode.parent.add_node(upnode,i)
+ 
+            
+            # re-distribution
+            else: 
+               pass
+
+
+         # 부모 없는 경우
+         else:
+            #아무것도 안함
 
 
    # key: integer
-   def delete(self, key):
-      # Fill in here
-      # 논리적으로 수도코드 먼저 줄글로 써두기
-      # 나중에는 과부화와서 그대로 구현하는걸 해야됨. 먼저 디자인
-      a = 1 # bogus code
+   def delete_list(self, del_keys, root, bnode_list, node_list):
+      result = ""
+
+      # 루트노드 찾기
+      while root.parent != None:
+         root = root.parent
+
+      for key in del_keys:
+         result = result + "\nDelete " + str(key)
+         
+         #리프노드 찾기
+         bpos = root
+         while not bpos.isleaf:
+            bpos = bpos.nodes[0].child1
+         
+         # 해당 bnode 찾기
+         while bpos.next != None:
+            if bpos.next.get_values()[0] > key:
+               break
+            else:
+               bpos = bpos.next
+
+         self.delete_entry(root, bpos, key)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         # 해당 bnode 내 value 제거
+         values = bpos.get_values()
+         for i in range(len(values)):
+            if key == values[i]:
+               break
+         bpos.pop_node(i)
+
+         # 연쇄 조건문 시작
+         while bpos.get_num_nodes() < 2:
+
+            # bpos가 leaf아니고 자식이 하나일 경우 : right없는경우
+            if bpos.isleaf == False and bpos.get_num_nodes == 1 and bpos.nodes[0].child2 == None:
+               bpos = bpos.nodes[0].child1
+               bpos.parent.pop_nodes[0]
+               bpos.parent = None
+            
+            else:
+               #왼쪽노드가 있을 경우
+               if bpos.prev != None:
+                  
+                  # merge
+                  if bpos.prev.get_num_nodes() < 4:
+                     movenode = bpos.pop_node(i)
+                     bpos.prev.add_node(movenode, bpos.prev.get_num_nodes())
+
+                     #옆노드 업데이트
+                     bpos.prev.next = bpos.next
+                     if bpos.next != None:
+                        bpos.next.prev = bpos.prev
+
+                     # 부모 노드 업데이트
+                     if bpos.parent != None:
+                        for i in range(bpos.parent.get_num_nodes()):
+                           if bpos.parent.nodes[i].child2 == bpos:
+                              bpos.parent.pop_nodes[i]
+                              
+                              # 부모가 없어진 경우 
+                              # if bpos.parent.get_num_nodes() == 0:
+                              assert(bpos.parent.get_num_nodes() != 0)
+
+                                 # #옆노드 업데이트: 할 필요 없음 어차피 없을테니
+                                 # assert(bpos.prev == None)
+                                 # assert(bpos.next == None)
+                                 # assert(bpos.parent == None)
+                                 # bpos.parent = None
+
+                                 
+                              break
+                        
+
+                     #bpos 제거
+                     pass
+                  
+                  # redistribute
+                  else:
+                     pass
+
+                  # 왼쪽애가 있을 경우
+                     #왼쪽애가 3개이하일 경우
+                        #합침
+                           #부모내 node 중 사라지는 bnode child2로 가지던 부모 value 제거
+                              #부모의 value가 없을 경우
+                              #부모의 bnode 제거
+                        #가져옴
+                           #왼쪽애중 가장 큰친구 가져옴
+                           #뺏은노드 child2로 가진 부모의 value 업데이트
+               elif bpos.next != None:
+                  pass
+                  #왼쪽애가 없을 경우
+                     #오른쪽 애가 3개이하일 경우
+                        #합침 : 오른쪽 애를 가져옴
+                           #위와 마찬가지로 오른쪽 애를 제거함
+                        #가져옴
+                           #오른쪽 애 중 가장 작은친구 가져옴
+                           #뺏긴노드 child2 가진 부모의 value 업데이트
+                           #얘는 무조건 부모도 젤 왼쪽임
+               
+               else:
+                  pass
+
+            
+            
+            # parent 노드에 대해서도 탐색
+            if bpos.parent != None:
+               bpos = bpos.parent
+
+
+
+         # key 빼낼때마다 stringmaker
+         result = result + 
+
+
       # Insert때와는 다르게 delete일때는 첫줄 바꿔서 해야함
-    
+      #insert 내에서 delete 호출해야 local variable인 노드 리스트 쓸수있음
+      #insert시 delete 조건 true, false로 -> delete_keys가 []인지 아닌지로 하면 될듯
+      #걍 show에서 empty 일 경우 tru false로 따로 넣어주는게 안전할듯
+      #내부 출력 함수도 조건으로 해야겠네 if !delete: result = self.stringmake이렇게
+      pass
+
    # insert_keys: integer list
    # delete_keys: integer list (an empty list in the first assi`gnment)
    # return: result string (sequence of tree representations)
    def show(self, insert_keys, delete_keys):
       # Fill in here
-      ins = insert_keys[:]
-      result = self.insert(ins)
+      ins_keys = insert_keys[:]
+      del_keys = delete_keys[:]
+
+######일단 insert부터 잘 돌아가는지 verification 해보기 안되면 리프 아닐때 prev next 지정한게 문제
+
+      if len(delete_keys) == 0:
+         result = self.insert(ins_keys,False,del_keys)
+      else:
+         result = self.insert(ins_keys, True, del_keys)
+
+      result = self.insert(ins_keys, del_keys)
       return result
       # First, run all insertions in insert_keys (the value is simply set to be the key)
       # Then, run all deletions in delete_keys
@@ -844,7 +877,6 @@ if __name__ == '__main__':
    # print(bpt.show([29, 26, 40, 34, 65, 73, 15, 12, 82, 44], []))
    # print(bpt.show([28, 50, 9, 44, 15, 68, 12, 73, 49, 62], []))
    # print(bpt.show([3, 97, 18, 96, 82, 84, 41, 67, 56, 11], []))
-   # print(bpt.show([0,17,6,18,11,1,3,16,9,5,2,13,19,8,15,10,14,12,7,4], []))
 
    # For Programming Assignment 2/2
    #  print(bpt.show([72, 99, 67, 70, 52, 28, 27, 89, 94, 10], [67, 10, 99, 94]))
