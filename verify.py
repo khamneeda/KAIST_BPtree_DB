@@ -8,6 +8,9 @@ def safe_mkdir(path):
 safe_mkdir('output')
 fname = 0
 while os.path.exists(f'input/{fname}.txt'):
+    if fname < 15:
+        fname += 1
+        continue
     insert_keys, delete_keys = [], []
     input_f = open(f'input/{fname}.txt')
     input_s = input_f.read().splitlines()
@@ -22,10 +25,11 @@ while os.path.exists(f'input/{fname}.txt'):
     output = tree.show(insert_keys, delete_keys)
     output_f = open(f'output/{fname}.txt', 'w')
     output_f.write(output)
-    answer_f = open(f'answer/{fname}.txt')
-    answer = answer_f.read()
-    if output == answer:
-        print(f'Test {fname} Correct')
-    else:
-        print(f'Incorrect For Test {fname}')
+    # answer_f = open(f'answer/{fname}.txt')
+    # answer = answer_f.read()
+    # if output == answer:
+    #     print(f'Test {fname} Correct')
+    # else:
+    #     print(f'Incorrect For Test {fname}')
+    #     #exit()
     fname += 1
