@@ -369,6 +369,14 @@ class BPTree(object):
 
    def stringmake(self, bnode, root, last_list, last, result, first):
       # 위치 프린트
+      if bnode == None:
+         return ""
+      elif bnode.nodes == []:
+         return ""
+      
+      if result == None:
+         result = ""
+
       result = result + "\n"
       if not root:
          result = result + "   "
@@ -455,8 +463,10 @@ class BPTree(object):
          # 부모, 자식 관계 모두 업데이트해야함
          # 옮기는 애만 자식 업데이트하면 되고
          # 새로 만든 bnode들 부모 동기화하면 됨
-         while bpos.get_num_nodes() == 5:          
-            upnode = bpos.nodes[2]
+         while bpos.get_num_nodes() == 5:   
+            node_list.append(self.Node(key))
+            upnode = node_list[len(node_list) - 1]       
+            upnode.value = bpos.nodes[2].value
 
             # leaf인 경우
             # leaf가 아닌 곳에 올라와서 문제 생긴 경우
@@ -528,14 +538,15 @@ class BPTree(object):
          result = self.stringmake(bpos, True, [], True, result, True)
 
       if delete == True:
-         print(result)
          return result + self.delete_list(del_keys, bpos, bnode_list, node_list)
 
       return result
 
 # 로컬이라 반영 안될경우 리스트도 넣어주고, 없앨때마다 전체 리스트서 빼주기
-   def delete_entry(self, root, bnode, key, bnode_list, node_list):
+   def delete_entry(self, root, bnode, key, bnode_list, node_list, theleaf):
       
+      if bnode == None:
+         return
 
       # delete node from bnode
       values = bnode.get_values()
@@ -549,6 +560,9 @@ class BPTree(object):
 
       # 루트 조건시 업데이트
       if bnode.parent == None and bnode.nodes[0].child2 == None:
+         if bnode.nodes[0].child1 == None:
+            self.debug(bnode,key,key,'#')
+            return
          root = bnode.nodes[0].child1
          bnode.nodes[0].child1.parent = None
          bnode.pop_node(0)
@@ -556,13 +570,14 @@ class BPTree(object):
             bnode.prev.next = bnode.next
          if bnode.next != None:
             bnode.next.prev = bnode.prev
+         bnode.nodes[0].child1 = None
       
       # 연쇄조건 시작
       elif bnode.get_num_nodes() < 2:
          assert(bnode.get_num_nodes() == 1)
          
          # 부모 있는 경우에만 실행 -> 없을 경우 루트라 시작 안해도 됨
-         if bnode.parent != None:
+         if bnode.parent != None and bnode.parent.nodes != []:
             # 왼쪽 노드 없는 경우
             node_left = False
             receive_bnode = bnode.parent.nodes[0].child2
@@ -579,6 +594,7 @@ class BPTree(object):
             recv_org_num = receive_bnode.get_num_nodes()
             # merge
             # 왼쪽에서 가져오는경우에는 parent value 업데이트 해줘야함 ? 이게 먼말 둘다 해줘야함
+            parent_bnode = bnode.parent
             if recv_org_num <4:
                # 부모노드
                for i in range(bnode.parent.get_num_nodes()):
@@ -587,7 +603,15 @@ class BPTree(object):
                parent_node = bnode.parent.nodes[i]
                if bnode.parent.nodes[0].child1 == bnode:
                   parent_node = bnode.parent.nodes[0]
-               
+                  parent_node.child1 = None
+               else:
+                  parent_node.child2 = None
+                  if i != bnode.parent.get_num_nodes()-1:
+                     bnode.parent.nodes[i+1].child1 = None
+
+               bnode.parent = None
+
+
                move_node = bnode.pop_node(0)
                #리프노드일 경우
                if bnode.isleaf:
@@ -605,7 +629,8 @@ class BPTree(object):
                      receive_bnode.prev = bnode.prev
                      if bnode.prev != None:
                         bnode.prev.next = receive_bnode
-               
+
+                  theleaf = receive_bnode
                # 리프노드가 아닌 경우
                else:
                   #parent의 자신 bnode를 child2로 가리키는 value 추가
@@ -634,6 +659,10 @@ class BPTree(object):
                      receive_bnode.prev = bnode.prev
                      if bnode.prev != None:
                         bnode.prev.next = receive_bnode
+               
+
+               # 부모 bnode에서 부모 node 제거
+               parent_bnode.del_node(parent_node)
 
 
                # 이거 지금은 merge 소속인데 전체로 해야하는지 판단 ####################################
@@ -680,7 +709,7 @@ class BPTree(object):
                # 이거 위치 여기인지 아니면 625번줄 합쳐서 넘었을 경우 위인지 생각 ###################################
                # 부모노드 제거 recursive 실행
                # 제거노드를 child2로 가진 부모bnode 내 node key
-               self.delete_entry(root, bnode.parent, parent_node.value, bnode_list, node_list)
+               self.delete_entry(root, parent_bnode.parent, parent_node.value, bnode_list, node_list, theleaf)
          
 
             #recv_org_num = receive_bnode.get_num_nodes()
@@ -693,14 +722,11 @@ class BPTree(object):
                   
                   # 왼쪽"에서" 옮길 경우
                   if node_left:
-                     print(bnode.nodes[0].value)
-                     print(bnode.get_num_nodes())
                      move_node = receive_bnode.pop_node(receive_bnode.get_num_nodes()-1)
                      for i in range(bnode.parent.get_num_nodes()):
                         if bnode.parent.nodes[i].child2 == bnode:
                            break
                      bnode.parent.nodes[i].value = move_node.value ## 얘가 bnode의 값도 바꿈 왜?: 같은 node여서..: insert랑 delete 다 고쳐야겠는데 부모 자식 그냥 추가하는애들 노드 새로 정의해서 넣어줘야함 어디 빠진듯
-                     print(bnode.nodes[0].value)
                      bnode.add_node(move_node,0)
 
 
@@ -757,15 +783,19 @@ class BPTree(object):
    # key: integer
    def delete_list(self, del_keys, root, bnode_list, node_list):
       result = ""
-
-      # 루트노드 찾기
-      while root.parent != None:
-         root = root.parent
+      theleaf = root
 
       for key in del_keys:
-         print("\n@@@@@Key:", key)
          result = result + "\nDelete " + str(key)
-         
+      
+         # 루트노드 찾기
+         root = theleaf
+         while root.parent != None:
+            if root.parent.get_num_nodes() == 0:
+               break
+            else:
+               root = root.parent
+
          #리프노드 찾기
          bpos = root
          while not bpos.isleaf:
@@ -780,17 +810,24 @@ class BPTree(object):
             else:
                bpos = bpos.next
 
-         self.delete_entry(root, bpos, key, bnode_list, node_list)
+         self.delete_entry(root, bpos, key, bnode_list, node_list, theleaf)
 
          if root == None:
             root = bpos
+         elif root.get_num_nodes() == 0:
+            root = bpos
          if root == None:
             root = leafnode
-         while root.parent != None:
-            root = root.parent
-         
+         elif root.get_num_nodes() == 0:
+            root = leafnode
+         if root != None:
+            while root.parent != None:
+               if root.parent.get_num_nodes() == 0:
+                  break
+               else:
+                  root = root.parent
+
          result = self.stringmake(root, True, [], True, result, True)
-         print(result)
 
       return result
 
@@ -808,8 +845,6 @@ class BPTree(object):
       # Fill in here
       ins_keys = insert_keys[:]
       del_keys = delete_keys[:]
-      print(ins_keys)
-      print(del_keys)
       if len(delete_keys) == 0:
          result = self.insert(ins_keys,False,del_keys)
       else:
@@ -882,8 +917,8 @@ if __name__ == '__main__':
    #  print(bpt.show([28, 50, 9, 44, 15, 68, 12, 73, 49, 62], [50, 62, 49, 73]))
    #  print(bpt.show([3, 97, 18, 96, 82, 84, 41, 67, 56, 11], [18, 67, 96, 82, 97, 41, 56]))
 
-   #bpt.show([72, 99, 67, 70, 52, 28, 27, 89, 94, 10], [67, 10, 99, 94])
+   bpt.show([72, 99, 67, 70, 52, 28, 27, 89, 94, 10], [67, 10, 99, 94])
    bpt.show([35, 71, 44, 60, 81, 61, 29, 95, 63, 23], [71, 61, 95, 63, 81])
-   #bpt.show([29, 26, 40, 34, 65, 73, 15, 12, 82, 44], [40, 82, 29, 15])
-   #bpt.show([28, 50, 9, 44, 15, 68, 12, 73, 49, 62], [50, 62, 49, 73])
-   ##bpt.show([3, 97, 18, 96, 82, 84, 41, 67, 56, 11], [18, 67, 96, 82, 97, 41, 56])
+   bpt.show([29, 26, 40, 34, 65, 73, 15, 12, 82, 44], [40, 82, 29, 15])
+   bpt.show([28, 50, 9, 44, 15, 68, 12, 73, 49, 62], [50, 62, 49, 73])
+   bpt.show([3, 97, 18, 96, 82, 84, 41, 67, 56, 11], [18, 67, 96, 82, 97, 41, 56])

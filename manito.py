@@ -14,4 +14,4 @@ suho.append("현숙")
 print("\n\n수호천사 리스트: ", suho)
 
 ####배분한 사람 리스트
-suho.remove('')
+suho.remove('')+
