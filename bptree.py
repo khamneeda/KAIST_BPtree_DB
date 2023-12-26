@@ -599,14 +599,12 @@ class BPTree(object):
       
       # 연쇄조건 시작
       elif bnode.get_num_nodes() < 2:
-         assert(bnode.get_num_nodes() == 1)
          
          # 부모 있는 경우에만 실행 -> 없을 경우 루트라 시작 안해도 됨
          if bnode.parent != None and bnode.parent.nodes != []:
             # 왼쪽 노드 없는 경우
             node_left = False
             receive_bnode = bnode.parent.nodes[0].child2
-            assert(receive_bnode != None)
             retbnode = receive_bnode
             
             # 왼쪽 노드 있는 경우
@@ -615,10 +613,7 @@ class BPTree(object):
                   node_left = True 
                   receive_bnode = bnode.parent.nodes[i].child1
                   break
-            # self.debug(bnode, key,key,"$")
-            # self.debug(bnode.parent, key,key,"#")
             
-            assert(receive_bnode.get_num_nodes() <5 and receive_bnode.get_num_nodes() > 1)
             recv_org_num = receive_bnode.get_num_nodes()
             # merge
             # 왼쪽에서 가져오는경우에는 parent value 업데이트 해줘야함 ? 이게 먼말 둘다 해줘야함
@@ -728,7 +723,6 @@ class BPTree(object):
                   
                   # 위에 노드가 없을 경우: 아마 이런 경우 없을거임
                   if newbnode.parent == None:
-                     print("Why depth increase?") ##########################################제출전 제거. assert 다 제거
                      bnode_list.append(self.BNode())
                      newparent = bnode_list[len(bnode_list) - 1]
                      newparent.add_node(upnode,0)
@@ -777,7 +771,6 @@ class BPTree(object):
                         if bnode.parent.nodes[i].child2 == bnode:
                            break
                      bnode.parent.nodes[i].value = move_node.value ## 얘가 bnode의 값도 바꿈 왜?: 같은 node여서..: insert랑 delete 다 고쳐야겠는데 부모 자식 그냥 추가하는애들 노드 새로 정의해서 넣어줘야함 어디 빠진듯
-                     print(i)
                      bnode.add_node(move_node,0)
 
 
@@ -817,7 +810,6 @@ class BPTree(object):
                      for i in range(bnode.parent.get_num_nodes()):
                         if bnode.parent.nodes[i].child1 == bnode:
                            break
-                        assert(i!=1)
                      par_val = bnode.parent.nodes[i].value
                      move_val = receive_bnode.nodes[0].value
 
@@ -919,17 +911,6 @@ class BPTree(object):
       else:
          result = self.insert(ins_keys, True, del_keys)
 
-      if insert_keys == [72, 99, 67, 70, 52, 28, 27, 89, 94, 10] and len(delete_keys) > 0:
-         print(result == answer1_1 + answer2_1)
-      elif insert_keys == [35, 71, 44, 60, 81, 61, 29, 95, 63, 23] and len(delete_keys) > 0:
-         print(result == answer1_2 + answer2_2)
-      elif insert_keys == [29, 26, 40, 34, 65, 73, 15, 12, 82, 44] and len(delete_keys) > 0:
-         print(result == answer1_3 + answer2_3)
-      elif insert_keys == [28, 50, 9, 44, 15, 68, 12, 73, 49, 62] and len(delete_keys) > 0:
-         print(result == answer1_4 + answer2_4)
-      elif insert_keys == [3, 97, 18, 96, 82, 84, 41, 67, 56, 11] and len(delete_keys) > 0:
-         print(result == answer1_5 + answer2_5)
-      # print(result)
       return result
 
    
@@ -987,8 +968,3 @@ if __name__ == '__main__':
    #  print(bpt.show([28, 50, 9, 44, 15, 68, 12, 73, 49, 62], [50, 62, 49, 73]))
    #  print(bpt.show([3, 97, 18, 96, 82, 84, 41, 67, 56, 11], [18, 67, 96, 82, 97, 41, 56]))
 
-   bpt.show([72, 99, 67, 70, 52, 28, 27, 89, 94, 10], [67, 10, 99, 94])
-   bpt.show([35, 71, 44, 60, 81, 61, 29, 95, 63, 23], [71, 61, 95, 63, 81])
-   bpt.show([29, 26, 40, 34, 65, 73, 15, 12, 82, 44], [40, 82, 29, 15])
-   bpt.show([28, 50, 9, 44, 15, 68, 12, 73, 49, 62], [50, 62, 49, 73])
-   bpt.show([3, 97, 18, 96, 82, 84, 41, 67, 56, 11], [18, 67, 96, 82, 97, 41, 56])
